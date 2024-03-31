@@ -14,7 +14,7 @@ class realmd::join::password {
   if $::realmd::computer_name != undef {
     $_computer_name = $::realmd::computer_name
   } else {
-    $_computer_name = $::hostname[0,15]
+    fail('Computer name is not set. Please set `realmd::computer_name`')
   }
 
   if $::operatingsystem == 'Ubuntu'  {
