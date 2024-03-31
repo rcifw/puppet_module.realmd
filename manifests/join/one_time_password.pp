@@ -22,7 +22,7 @@ class realmd::join::one_time_password {
         $_password=$::realmd::one_time_password
   }
   $_realm=upcase($::realmd::domain)
-  $_fqdn=$::fqdn
+  $_fqdn=$trusted['certname']
 
   if $_manage_krb_config {
     file { 'krb_configuration':
