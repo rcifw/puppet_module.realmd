@@ -17,7 +17,7 @@ class realmd::join::password {
     fail('Computer name is not set. Please set `realmd::computer_name`')
   }
 
-  if $::operatingsystem == 'Ubuntu'  {
+  if $facts['os']['name'] == 'Ubuntu' {
       $_computer_name_arg  = $facts['os']['distro']['codename'] ? {
       'xenial'  => '',
       'bionic'  => '',
