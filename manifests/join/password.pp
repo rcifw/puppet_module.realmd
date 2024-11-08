@@ -6,6 +6,7 @@
 class realmd::join::password {
 
   $_domain             = $::realmd::domain
+  $_domain_ipaddr      = $::realmd::domain_ipaddr
   $_user               = $::realmd::domain_join_user
   $_password           = $::realmd::domain_join_password
   $_ou                 = $::realmd::ou
@@ -29,10 +30,16 @@ class realmd::join::password {
       $_computer_name_arg = ["--computer-name=${_computer_name}"]
   }
 
+  # If an IP address is provided, use it as the first argument
+  # instead of the domain. This is useful when the DNS is not working.
+  $_first_arg = $_domain_ipaddr ? {
+    undef   => $_domain,
+    default => $_domain_ipaddr,
+  }
   if $_ou != undef {
-    $_realm_args = [$_domain, '--unattended', "--computer-ou='${_ou}'", "--user=${_user}"]
+    $_realm_args = [$_first_arg, '--unattended', "--computer-ou='${_ou}'", "--user=${_user}"]
   } else {
-    $_realm_args = [$_domain, '--unattended', "--user=${_user}"]
+    $_realm_args = [$_first_arg, '--unattended', "--user=${_user}"]
   }
 
   $_args = strip(join(concat($_realm_args, $_computer_name_arg, $_extra_join_options), ' '))
